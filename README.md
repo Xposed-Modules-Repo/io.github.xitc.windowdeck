@@ -102,4 +102,10 @@ beta.28 基于公开 beta.27 做包名迁移，发布流程回归、布局回归
 
 请到[源码仓库 Issues](https://github.com/xitc/windowdeck/issues)反馈，附上模块版本、机型、完整固件、桌面版本、LSPosed / Root 方案，以及复现步骤。分享截图和日志前请移除账号、通知和其他个人信息。
 
+## 自动更新
+
+本仓库的 [Sync releases 工作流](https://github.com/Xposed-Modules-Repo/io.github.xitc.windowdeck/actions/workflows/sync-releases.yml)每 30 分钟检查源码仓库已公开的 Release，并同步缺失的新版 APK、校验文件和发布说明。它直接复制已签名产物，不重新构建或签名；旧包名历史版本不迁移。
+
+已有公开版本不会覆盖，失败留下的草稿会在下一轮重试。维护者也可手动运行并指定源仓库标签。定时调度可能延迟，新版本以 Releases 页面实际显示为准。
+
 源码、构建脚本与每日构建工作流位于 [xitc/windowdeck](https://github.com/xitc/windowdeck)。本仓库用于 LSPosed 模块介绍和 APK 分发。

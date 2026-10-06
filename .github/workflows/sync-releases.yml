@@ -1,0 +1,46 @@
+name: Sync releases
+
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Optional source tag to retry; empty syncs all missing releases'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-windowdeck-releases
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'Xposed-Modules-Repo/io.github.xitc.windowdeck'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout source release tools
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: xitc/windowdeck
+          ref: main
+          persist-credentials: false
+
+      - name: Mirror policy regression tests
+        run: python3 -m unittest discover -s tests -p 'test_sync_lsposed.py' -v
+
+      - name: Sync verified release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SYNC_TAG: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [ -n "$SYNC_TAG" ]; then
+            args+=(--tag "$SYNC_TAG")
+          fi
+          python3 tools/sync_lsposed.py "${args[@]}"

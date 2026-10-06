@@ -77,4 +77,10 @@ Exit the workspace, disable the module in LSPosed, restart both hosts, then unin
 
 Report issues at [xitc/windowdeck](https://github.com/xitc/windowdeck/issues), including module version, device, full firmware, launcher version, LSPosed/root details and reproduction steps. Remove personal information from screenshots and logs.
 
+## Automatic updates
+
+The [Sync releases workflow](https://github.com/Xposed-Modules-Repo/io.github.xitc.windowdeck/actions/workflows/sync-releases.yml) checks public source releases every 30 minutes and mirrors missing new-package releases, including the same signed APK, checksums and notes. It does not rebuild or re-sign APKs and does not migrate old-package historical releases.
+
+Published releases are not overwritten. Failed drafts are retried on the next run. Maintainers can also run the workflow manually with an optional source tag. Scheduled runs may be delayed; check Releases for actual availability.
+
 Source code, build scripts and Actions are in [xitc/windowdeck](https://github.com/xitc/windowdeck). This repository hosts module documentation and APK releases.
